@@ -2,14 +2,13 @@ import cv2
 import os
 import sys
 
-# --------- GET ID FROM COMMAND LINE ----------
+
 if len(sys.argv) < 2:
     print("Usage: python capture_faces.py <id>")
     sys.exit(1)
 
 user_id = sys.argv[1]
 
-# --------- SETUP ----------
 face_cascade = cv2.CascadeClassifier("haarcascade_frontalface_default.xml")
 cap = cv2.VideoCapture(0)
 
@@ -52,3 +51,4 @@ while True:
 cap.release()
 cv2.destroyAllWindows()
 print("[INFO] Face capture completed.")
+
