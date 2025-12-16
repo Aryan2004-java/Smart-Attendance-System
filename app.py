@@ -4,19 +4,16 @@ import sqlite3
 import pandas as pd
 from db import reset_attendance, get_attendance
 
-# ---------------- PAGE CONFIG ----------------
 st.set_page_config(
     page_title="Smart Attendance System",
     layout="wide"
 )
 
-# ---------------- HEADER ----------------
 st.title("🤖 Smart Attendance System")
 st.caption("Face Recognition • OpenCV • SQLite • Streamlit")
 
 st.markdown("---")
 
-# ---------------- DB STATS ----------------
 conn = sqlite3.connect("database/attendance.db")
 cur = conn.cursor()
 
@@ -35,7 +32,7 @@ total_records = cur.fetchone()[0]
 
 conn.close()
 
-# ---------------- DASHBOARD CARDS ----------------
+
 st.header("📊 Attendance Overview")
 
 c1, c2, c3 = st.columns(3)
@@ -49,7 +46,7 @@ with c2:
 with c3:
     st.metric("📊 Total Records", total_records)
 
-# ---------------- RESET BUTTON ----------------
+
 if total_records > 0:
     if st.button("🧹 Reset ALL Attendance"):
         with st.spinner("Clearing attendance records..."):
@@ -59,7 +56,7 @@ if total_records > 0:
 else:
     st.info("📭 No attendance data to reset.")
 
-# ---------------- ATTENDANCE CONTROL ----------------
+
 st.markdown("---")
 st.header("🎥 Attendance Control")
 
@@ -70,7 +67,7 @@ if st.button("▶️ Start Attendance", disabled=(total_users == 0)):
 if total_users == 0:
     st.warning("⚠️ No users registered. Please register a user first.")
 
-# ---------------- REGISTER USER ----------------
+
 st.markdown("---")
 st.header("➕ Register New User")
 
@@ -85,7 +82,7 @@ if st.button("📸 Register User"):
         st.success(f"User '{name}' registered successfully!")
         st.rerun()
 
-# ---------------- ATTENDANCE RECORDS ----------------
+
 st.markdown("---")
 st.header("📋 Attendance Records")
 
@@ -97,7 +94,7 @@ else:
     df = pd.DataFrame(records, columns=["Name", "Timestamp"])
     df["Date"] = pd.to_datetime(df["Timestamp"]).dt.date
 
-    # ---- FILTERS ----
+  
     f1, f2, f3 = st.columns(3)
 
     with f1:
@@ -110,7 +107,7 @@ else:
         users = ["All"] + sorted(df["Name"].unique().tolist())
         selected_user = st.selectbox("👤 Filter by user", users)
 
-    # ---- APPLY FILTERS ----
+  
     if selected_date:
         df = df[df["Date"] == selected_date]
 
@@ -121,10 +118,9 @@ else:
     if selected_user != "All":
         df = df[df["Name"] == selected_user]
 
-    # ---- TABLE ----
     st.dataframe(df, use_container_width=True)
 
-    # ---- DOWNLOAD ----
+
     csv = df.to_csv(index=False).encode("utf-8")
     st.download_button(
         "⬇️ Download Attendance CSV",
@@ -132,3 +128,4 @@ else:
         "attendance.csv",
         "text/csv"
     )
+
