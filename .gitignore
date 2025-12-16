@@ -1,0 +1,18 @@
+# Python
+__pycache__/
+*.pyc
+
+# Virtual env
+venv/
+.env/
+
+# OS
+.DS_Store
+
+# Data (biometric / generated)
+dataset/
+models/trainer.yml
+database/attendance.db
+
+# IDE
+.vscode/
